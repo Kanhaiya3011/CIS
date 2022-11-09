@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32922.545
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.api", "CIS.api\CIS.api.csproj", "{A5029FEC-F6DA-445A-8B6A-5EC62ECDB206}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.DAL", "CIS.DAL\CIS.DAL.csproj", "{A70C3472-9218-4B3F-9399-F5E7861FFE7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.Models", "CIS.Models\CIS.Models.csproj", "{3A214845-0FC1-4747-A89A-8A6BBE266C40}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5029FEC-F6DA-445A-8B6A-5EC62ECDB206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5029FEC-F6DA-445A-8B6A-5EC62ECDB206}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5029FEC-F6DA-445A-8B6A-5EC62ECDB206}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5029FEC-F6DA-445A-8B6A-5EC62ECDB206}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A70C3472-9218-4B3F-9399-F5E7861FFE7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A70C3472-9218-4B3F-9399-F5E7861FFE7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A70C3472-9218-4B3F-9399-F5E7861FFE7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A70C3472-9218-4B3F-9399-F5E7861FFE7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A214845-0FC1-4747-A89A-8A6BBE266C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A214845-0FC1-4747-A89A-8A6BBE266C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A214845-0FC1-4747-A89A-8A6BBE266C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A214845-0FC1-4747-A89A-8A6BBE266C40}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2CA795B1-E395-4232-A4BC-8AD4DE5C4190}
+	EndGlobalSection
+EndGlobal
