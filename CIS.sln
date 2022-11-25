@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.api", "CIS.api\CIS.api.csproj", "{A5029FEC-F6DA-445A-8B6A-5EC62ECDB206}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.api", "CIS.api\CIS.api.csproj", "{A5029FEC-F6DA-445A-8B6A-5EC62ECDB206}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.DAL", "CIS.DAL\CIS.DAL.csproj", "{A70C3472-9218-4B3F-9399-F5E7861FFE7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.DAL", "CIS.DAL\CIS.DAL.csproj", "{A70C3472-9218-4B3F-9399-F5E7861FFE7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.Models", "CIS.Models\CIS.Models.csproj", "{3A214845-0FC1-4747-A89A-8A6BBE266C40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Models", "CIS.Models\CIS.Models.csproj", "{3A214845-0FC1-4747-A89A-8A6BBE266C40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.Web", "CIS.Web\CIS.Web.csproj", "{C76E5587-29CF-4624-BC44-49523C64B040}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{3A214845-0FC1-4747-A89A-8A6BBE266C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A214845-0FC1-4747-A89A-8A6BBE266C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A214845-0FC1-4747-A89A-8A6BBE266C40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C76E5587-29CF-4624-BC44-49523C64B040}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C76E5587-29CF-4624-BC44-49523C64B040}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C76E5587-29CF-4624-BC44-49523C64B040}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C76E5587-29CF-4624-BC44-49523C64B040}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
