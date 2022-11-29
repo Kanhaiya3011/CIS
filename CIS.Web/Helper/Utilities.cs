@@ -34,10 +34,18 @@ namespace CIS.Web.Helper
             return response;
 
         }
-        public static T DeSerializeObject<T>(string content, T TObject)
+        public static T? DeSerializeObject<T>(string content)
         {
-            var obj = JsonConvert.DeserializeObject<T>(content);
-            return (T)obj;
+            try
+            {
+                var obj = JsonConvert.DeserializeObject<T>(content);
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+           
         }
     }
 }

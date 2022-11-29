@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CIS.api.Controllers
 {
-    public class UserController : BaseController
+    public class BeneficiaryController : BaseController
     {
-        private readonly ILogger<UserController> _logger;
+        private readonly ILogger<BeneficiaryController> _logger;
         private readonly ApplicationDbContext _context;
-        public UserController(ILogger<UserController> logger, ApplicationDbContext context)
+        public BeneficiaryController(ILogger<BeneficiaryController> logger, ApplicationDbContext context)
         {
             _logger = logger;
             _context = context;
@@ -20,7 +20,7 @@ namespace CIS.api.Controllers
         {
             try
             {
-                var users = await _context.Users.ToListAsync();
+                var users = await _context.Beneficiaries.ToListAsync();
                 return Ok(users);
             }
             catch (Exception ex)
@@ -35,7 +35,7 @@ namespace CIS.api.Controllers
         {
             try
             {
-                var user = await _context.Users.FindAsync(id);
+                var user = await _context.Beneficiaries.FindAsync(id);
                 return Ok(user);
             }
             catch (Exception ex)
@@ -46,13 +46,13 @@ namespace CIS.api.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] User user)
+        public async Task<IActionResult> Post([FromBody] Beneficiary beneficiary)
         {
             try
             {
-                if (user != null)
+                if (beneficiary != null)
                 {
-                    await _context.Users.AddAsync(user);
+                    await _context.Beneficiaries.AddAsync(beneficiary);
                     await _context.SaveChangesAsync();
                    
                 }
@@ -65,19 +65,19 @@ namespace CIS.api.Controllers
 
                 return BadRequest(ex.Message);
             }
-            return Ok(user);
+            return Ok(beneficiary);
 
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] User user)
+        public async Task<IActionResult> Put(int id, [FromBody] Beneficiary beneficiary)
         {
-            if (user == null || id != user.Id)
+            if (beneficiary == null || id != beneficiary.Id)
                 return BadRequest();
 
-            _context.Users.Update(user);
+            _context.Beneficiaries.Update(beneficiary);
             await _context.SaveChangesAsync();
 
-            return Ok(user);
+            return Ok(beneficiary);
 
         }
         [HttpDelete("{id}")]
@@ -86,11 +86,11 @@ namespace CIS.api.Controllers
             if (id == 0)
                 return BadRequest();
 
-            var villa = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if (villa == null)
+            var ben = await _context.Beneficiaries.FirstOrDefaultAsync(u => u.Id == id);
+            if (ben == null)
                 return NotFound();
 
-            _context.Users.Remove(villa);
+            _context.Beneficiaries.Remove(ben);
             await _context.SaveChangesAsync();
 
             return NoContent();

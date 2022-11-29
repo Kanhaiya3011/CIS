@@ -480,3 +480,4 @@ $RECYCLE.BIN/
 bin
 obj
 packages
+/CIS.api/Migrations
