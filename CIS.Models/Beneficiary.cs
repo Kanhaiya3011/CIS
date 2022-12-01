@@ -13,8 +13,7 @@ namespace CIS.Models
         [Required]
         public string LastName { get; init; }
         public Gender Gender { get; init; }
-        [Phone]
-        public double PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         [EmailAddress]
         [Required]
         public string EMail { get; set; }

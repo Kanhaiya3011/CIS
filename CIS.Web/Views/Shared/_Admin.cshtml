@@ -12,56 +12,65 @@
     <div class="container">
         <section class="banner-user">
         </section>
-        <nav class="left-accordion">
-            <div class="accordion accordion-flush" id="accordion">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingOne">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                            User Management
-                        </button>
-                    </h2>
-                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                        <ul class="ul-nav">
-                            <li><a href="Admin/AddUser">Add Users</a></li>
-                            <li><a href="Admin/ViewUsers">View Users</a></li>
-                            <li><a href="Admin/EditUser">Edit Users</a></li>
-                        </ul>
+        <div class="row">
+            <div class="col-3">
+                <nav class="left-accordion">
+                    <div class="accordion accordion-flush" id="accordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                    Beneficiary
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                <ul class="ul-nav">
+                                    <li><a asp-action="AddBeneficiary" asp-controller="User">Add Beneficiary</a></li>
+                                    <li><a asp-action="ViewBeneficiary" asp-controller="User">View Beneficiary</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                    Schemes
+                                </button>
+                            </h2>
+                            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                <ul class="ul-nav">
+                                    <li><a asp-action="AddScheme" asp-controller="User">Add Schemes</a></li>
+                                    <li><a asp-action="ViewSchemes" asp-controller="User">View Schemes</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                    Schemes-Beneficiary Management
+                                </button>
+                            </h2>
+                            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                <ul class="ul-nav">
+                                    <li><a asp-action="AssociateSchemesBeneficiary" asp-controller="User">Associate Schemes to Beneficiary</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                            Schemes
-                        </button>
-                    </h2>
-                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                        <ul class="ul-nav">
-                            <li><a href="Admin/ViewSchemes">Approve Schemes</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                            Schemes-Beneficiary Management
-                        </button>
-                    </h2>
-                    <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                        <ul class="ul-nav">
-                            <li><a href="User/AssociateSchemesBeneficiary">Associate Schemes to Beneficiary</a></li>
-                        </ul>
-                    </div>
-                </div>
+                </nav>
             </div>
-        </nav>
-        @RenderBody()
+            <div class="col-9">
+                @RenderBody()
+            </div>
+        </div>
+
+
         <footer class="border-top footer text-muted">
-            <div class="container">
+            <div class="row" style="text-align: center;">
                 &copy; 2022 - CIS.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
             </div>
         </footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

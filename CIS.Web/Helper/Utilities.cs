@@ -5,27 +5,36 @@ namespace CIS.Web.Helper
     public class Utilities
     {
         private static HttpClient client = new HttpClient();
-        public static async Task<HttpResponseMessage> HttpPostCall(string url, StringContent content)
+        public static async Task<T?> HttpPostCall<T>(string url, T content)
         {
-            HttpResponseMessage response = await client.PostAsync(url, content);
-            return response;
+            var payload = SerializeObject(content);
+            HttpResponseMessage response = await client.PostAsync(url, payload);
+            var result = await response.Content.ReadAsStringAsync();
+            var returnObject = JsonConvert.DeserializeObject<T>(result);
+            return returnObject;
 
         }
-        public static StringContent SerializeObject<T>(T TObject)
+        private static StringContent SerializeObject<T>(T TObject)
         {
             var content = new StringContent(JsonConvert.SerializeObject(TObject),
                 System.Text.Encoding.UTF8, "application/json");
             return content;
         }
-        public static async Task<HttpResponseMessage> HttpGetCall(string url)
+        public static async Task<T?> HttpGetCall<T>(string url)
         {
             HttpResponseMessage response = await client.GetAsync(url);
-            return response;
+            var result = await response.Content.ReadAsStringAsync();
+            var returnObject = JsonConvert.DeserializeObject<T>(result);
+            return returnObject;
         }
-        public static async Task<HttpResponseMessage> HttpPutCall(string url, StringContent content)
+        public static async Task<T?> HttpPutCall<T>(string url, T content)
         {
-            HttpResponseMessage response = await client.PutAsync(url, content);
-            return response;
+            var payload = SerializeObject(content);
+            HttpResponseMessage response = await client.PutAsync(url, payload);
+            var result = await response.Content.ReadAsStringAsync();
+            var returnObject = JsonConvert.DeserializeObject<T>(result);
+            return returnObject;
+
 
         }
         public static async Task<HttpResponseMessage> HttDeleteCall(string url)
@@ -34,7 +43,7 @@ namespace CIS.Web.Helper
             return response;
 
         }
-        public static T? DeSerializeObject<T>(string content)
+        private static T? DeSerializeObject<T>(string content)
         {
             try
             {

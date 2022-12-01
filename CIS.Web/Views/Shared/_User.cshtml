@@ -24,8 +24,8 @@
                             </h2>
                             <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                 <ul class="ul-nav">
-                                    <li><a href="User/AddBeneficiary">Add Beneficiary</a></li>
-                                    <li><a href="User/ViewBeneficiary">View Beneficiary</a></li>
+                                    <li><a  asp-action="AddBeneficiary" asp-controller="User">Add Beneficiary</a></li>
+                                    <li><a asp-action="ViewBeneficiary" asp-controller="User">View Beneficiary</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -37,8 +37,8 @@
                             </h2>
                             <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                                 <ul class="ul-nav">
-                                    <li><a href="User/AddScheme">Add Beneficiary</a></li>
-                                    <li><a href="User/ViewSchemes">View Beneficiary</a></li>
+                                    <li><a asp-action="AddScheme" asp-controller="User">Add Schemes</a></li>
+                                    <li><a asp-action="ViewSchemes" asp-controller="User">View Schemes</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                             </h2>
                             <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
                                 <ul class="ul-nav">
-                                    <li><a href="User/AssociateSchemesBeneficiary">Associate Schemes to Beneficiary</a></li>
+                                    <li><a asp-action="AssociateSchemesBeneficiary" asp-controller="User">Associate Schemes to Beneficiary</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
         
         
         <footer class="border-top footer text-muted">
-            <div class="container" style="text-align: center;">
+            <div class="row" style="text-align: center;">
                 &copy; 2022 - CIS.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
             </div>
         </footer>

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CIS.api.Controllers
 {
-    public class BeneficiaryController : BaseController
+    public class SchemeController : BaseController
     {
-        private readonly ILogger<BeneficiaryController> _logger;
+        private readonly ILogger<SchemeController> _logger;
         private readonly ApplicationDbContext _context;
-        public BeneficiaryController(ILogger<BeneficiaryController> logger, ApplicationDbContext context)
+        public SchemeController(ILogger<SchemeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
             _context = context;
@@ -20,7 +20,7 @@ namespace CIS.api.Controllers
         {
             try
             {
-                var users = await _context.Beneficiaries.ToListAsync();
+                var users = await _context.Schemes.Where(s => s.IsActive == true).ToListAsync();
                 return Ok(users);
             }
             catch (Exception ex)
@@ -35,8 +35,8 @@ namespace CIS.api.Controllers
         {
             try
             {
-                var user = await _context.Beneficiaries.FindAsync(id);
-                return Ok(user);
+                var scheme = await _context.Schemes.FindAsync(id);
+                return Ok(scheme);
             }
             catch (Exception ex)
             {
@@ -46,13 +46,13 @@ namespace CIS.api.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Beneficiary beneficiary)
+        public async Task<IActionResult> Post([FromBody] Scheme scheme)
         {
             try
             {
-                if (beneficiary != null)
+                if (scheme != null)
                 {
-                    await _context.Beneficiaries.AddAsync(beneficiary);
+                    await _context.Schemes.AddAsync(scheme);
                     await _context.SaveChangesAsync();
                    
                 }
@@ -65,19 +65,19 @@ namespace CIS.api.Controllers
 
                 return BadRequest(ex.Message);
             }
-            return Ok(beneficiary);
+            return Ok(scheme);
 
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Beneficiary beneficiary)
+        public async Task<IActionResult> Put(int id, [FromBody] Scheme scheme)
         {
-            if (beneficiary == null || id != beneficiary.Id)
+            if (scheme == null || id != scheme.Id)
                 return BadRequest();
 
-            _context.Beneficiaries.Update(beneficiary);
+            _context.Schemes.Update(scheme);
             await _context.SaveChangesAsync();
 
-            return Ok(beneficiary);
+            return Ok(scheme);
 
         }
         [HttpDelete("{id}")]
@@ -86,11 +86,12 @@ namespace CIS.api.Controllers
             if (id == 0)
                 return BadRequest();
 
-            var ben = await _context.Beneficiaries.FirstOrDefaultAsync(u => u.Id == id);
-            if (ben == null)
+            var scheme = await _context.Schemes.FirstOrDefaultAsync(u => u.Id == id);
+            if (scheme == null)
                 return NotFound();
 
-            _context.Beneficiaries.Remove(ben);
+            scheme.IsActive = false;
+            _context.Schemes.Update(scheme);
             await _context.SaveChangesAsync();
 
             return NoContent();

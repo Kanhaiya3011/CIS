@@ -21,7 +21,8 @@ html {
     background-color: #F9F6EE;
     transition: 1.25s;
     width: 100%;
-    max-height: 600px;
+    min-height: 848px;
+    max-height: 900px;
 }
 
 .left-accordion {
@@ -189,4 +190,10 @@ html {
     font-size: 18px;
     font-weight: 600;
     right: 300px;
+}
+.form-group input, textarea {
+    font-size: 18px;
+    padding: 5px 4px 5px 15px;
+    margin: 5px 15px 5px 15px;
+    height: 50px;
 }
