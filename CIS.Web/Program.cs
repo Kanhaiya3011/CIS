@@ -1,3 +1,5 @@
+using CIS.Web.Helper;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +10,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+builder.Services.AddScoped<IUtilities, Utilities>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

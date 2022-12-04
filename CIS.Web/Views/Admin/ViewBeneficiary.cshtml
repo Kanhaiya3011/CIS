@@ -73,8 +73,8 @@
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditBen", "User", new { id = item.Id}) |
-                    @Html.ActionLink("Details", "ViewBen", "User", new { id = item.Id })
+                    @Html.ActionLink("Approve", "ApproveBen", "Admin", new { id = item.Id}) |
+                    @Html.ActionLink("Reject", "RejectBen", "Admin", new { id = item.Id })
 
                 </td>
             </tr>

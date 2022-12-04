@@ -2,10 +2,10 @@
 
 namespace CIS.Web.Helper
 {
-    public class Utilities
+    public class Utilities : IUtilities
     {
-        private static HttpClient client = new HttpClient();
-        public static async Task<T?> HttpPostCall<T>(string url, T content)
+        private HttpClient client = new HttpClient();
+        public async Task<T?> HttpPostCall<T>(string url, T content)
         {
             var payload = SerializeObject(content);
             HttpResponseMessage response = await client.PostAsync(url, payload);
@@ -14,20 +14,20 @@ namespace CIS.Web.Helper
             return returnObject;
 
         }
-        private static StringContent SerializeObject<T>(T TObject)
+        private StringContent SerializeObject<T>(T TObject)
         {
             var content = new StringContent(JsonConvert.SerializeObject(TObject),
                 System.Text.Encoding.UTF8, "application/json");
             return content;
         }
-        public static async Task<T?> HttpGetCall<T>(string url)
+        public async Task<T?> HttpGetCall<T>(string url)
         {
             HttpResponseMessage response = await client.GetAsync(url);
             var result = await response.Content.ReadAsStringAsync();
             var returnObject = JsonConvert.DeserializeObject<T>(result);
             return returnObject;
         }
-        public static async Task<T?> HttpPutCall<T>(string url, T content)
+        public async Task<T?> HttpPutCall<T>(string url, T content)
         {
             var payload = SerializeObject(content);
             HttpResponseMessage response = await client.PutAsync(url, payload);
@@ -37,13 +37,13 @@ namespace CIS.Web.Helper
 
 
         }
-        public static async Task<HttpResponseMessage> HttDeleteCall(string url)
+        public async Task<HttpResponseMessage> HttDeleteCall(string url)
         {
             HttpResponseMessage response = await client.DeleteAsync(url);
             return response;
 
         }
-        private static T? DeSerializeObject<T>(string content)
+        private T? DeSerializeObject<T>(string content)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace CIS.Web.Helper
             {
                 throw new Exception(ex.Message, ex);
             }
-           
+
         }
     }
 }

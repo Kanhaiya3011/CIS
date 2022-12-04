@@ -1,2 +1,8 @@
-﻿@{
+﻿@model CIS.Models.User
+@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+    var user = $"{Model.FirstName} {Model.LastName}";
 }
+<div class="welcome-message">
+    <p>Welcome : @user</p>
+</div> 

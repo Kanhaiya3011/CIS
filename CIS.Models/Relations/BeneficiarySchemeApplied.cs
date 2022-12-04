@@ -15,7 +15,7 @@ namespace CIS.Models.Relations
     {
         public IList<Beneficiary> Beneficiary { get; set; }
         public IList<Scheme> Schemes { get; set; }
-        public IList<BeneficiarySchemeApplied> SchemeApplied {get; set;}
+        public IList<BeneficiarySchemeApplied> SchemeApplied { get; set; }
 
         public ViewModelBeneficiarySchemeApplied()
         {
@@ -23,5 +23,5 @@ namespace CIS.Models.Relations
             Schemes = new List<Scheme>();
             SchemeApplied = new List<BeneficiarySchemeApplied>();
         }
-
+    }
 }

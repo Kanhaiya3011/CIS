@@ -10,6 +10,11 @@ namespace CIS.Web.Controllers
     public class UserController : Controller
     {
         private readonly string _apiUrl = @"https://localhost:7042/api";
+        private readonly IUtilities _Utilities;
+        public UserController(IUtilities utilities)
+        {
+            _Utilities = utilities;
+        }
 
         public async Task<IActionResult> Index(int id)
         {
@@ -17,19 +22,19 @@ namespace CIS.Web.Controllers
             if (id != 0)
             {
                 var url = $"{_apiUrl}/User/{id}";
-                var result = await Utilities.HttpGetCall<User>(url);
-                
+                var result = await _Utilities.HttpGetCall<User>(url);
+
                 TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
                 return View("Index", result);
             }
             else
                 return BadRequest();
-           
+
         }
         public async Task<IActionResult> ViewBeneficiary()
         {
             var url = $"{_apiUrl}/Beneficiary";
-            var result = await Utilities.HttpGetCall<IList<Beneficiary>>(url);
+            var result = await _Utilities.HttpGetCall<IList<Beneficiary>>(url);
             return View("ViewBeneficiary", result);
         }
         public IActionResult AddBeneficiary()
@@ -49,7 +54,7 @@ namespace CIS.Web.Controllers
                 var url = $"{_apiUrl}/Beneficiary";
                 beneficiary.Status = "Pending";
                 beneficiary.IsActive = false;
-                var result = await Utilities.HttpPostCall<Beneficiary>(url, beneficiary);
+                var result = await _Utilities.HttpPostCall<Beneficiary>(url, beneficiary);
                 id = result?.Id;
             }
             TempData["benCreated"] = $"Successfully created User with the ID : {id}";
@@ -61,8 +66,8 @@ namespace CIS.Web.Controllers
             if (id == 0)
                 return BadRequest();
             var url = $"{_apiUrl}/Beneficiary/{id}";
-            var result = await Utilities.HttpGetCall<Beneficiary>(url);
-            return View("ViewBen", result );
+            var result = await _Utilities.HttpGetCall<Beneficiary>(url);
+            return View("ViewBen", result);
 
         }
         public async Task<IActionResult> EditBen(int id)
@@ -70,7 +75,7 @@ namespace CIS.Web.Controllers
             if (id == 0)
                 return BadRequest();
             var url = $"{_apiUrl}/Beneficiary/{id}";
-            var result = await Utilities.HttpGetCall<Beneficiary>(url);
+            var result = await _Utilities.HttpGetCall<Beneficiary>(url);
             TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return View("EditBen", result);
         }
@@ -80,8 +85,8 @@ namespace CIS.Web.Controllers
             if (ben.Id == 0)
                 return BadRequest();
 
-            var url = $"{_apiUrl}/Beneficiary";
-            var result = await Utilities.HttpPutCall<Beneficiary>(url, ben);
+            var url = $"{_apiUrl}/Beneficiary/{ben.Id}";
+            var result = await _Utilities.HttpPutCall<Beneficiary>(url, ben);
 
             var newBen = new Beneficiary();
             TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
@@ -92,7 +97,7 @@ namespace CIS.Web.Controllers
             var scheme = new SchemeViewModel();
             var url = $"{_apiUrl}/Category";
             scheme.scheme = new Scheme();
-            scheme.categories = await Utilities.HttpGetCall<IList<Category>>(url);
+            scheme.categories = await _Utilities.HttpGetCall<IList<Category>>(url);
             TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return View("AddScheme", scheme);
         }
@@ -101,10 +106,10 @@ namespace CIS.Web.Controllers
         {
             var url = $"{_apiUrl}/Scheme";
             var newScheme = new SchemeViewModel();
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                var result = Utilities.HttpPostCall<Scheme>(url, scheme);  
-                newScheme.categories = await Utilities.HttpGetCall<IList<Category>>($"{_apiUrl}/Category");
+                var result = _Utilities.HttpPostCall<Scheme>(url, scheme);
+                newScheme.categories = await _Utilities.HttpGetCall<IList<Category>>($"{_apiUrl}/Category");
             }
             else
             {
@@ -116,22 +121,27 @@ namespace CIS.Web.Controllers
         public async Task<IActionResult> ViewSchemesAsync()
         {
             var url = $"{_apiUrl}/Scheme";
-            var result = await Utilities.HttpGetCall<IList<Scheme>>(url);
+            var result = await _Utilities.HttpGetCall<IList<Scheme>>(url);
 
             return View("ViewSchemes", result);
         }
         public async Task<IActionResult> AssociateSchemesBeneficiary()
         {
             var vw = new ViewModelBeneficiarySchemeApplied();
-            vw.Beneficiary =await Utilities.HttpGetCall<IList<Beneficiary>>($"{_apiUrl}/Beneficiary");
-            vw.Schemes = await Utilities.HttpGetCall<IList<Scheme>>($"{_apiUrl}/Beneficiary");
-            vw.SchemeApplied = await Utilities.HttpGetCall<IList<BeneficiarySchemeApplied>>($"{_apiUrl}/Beneficiary");
+            vw.Beneficiary = await _Utilities.HttpGetCall<IList<Beneficiary>>($"{_apiUrl}/Beneficiary");
+            vw.Schemes = await _Utilities.HttpGetCall<IList<Scheme>>($"{_apiUrl}/Scheme");
+            vw.SchemeApplied = await _Utilities.HttpGetCall<IList<BeneficiarySchemeApplied>>($"{_apiUrl}/Beneficiary");
+            var schemesApplied = vw.SchemeApplied?.Join(vw.Schemes,
+                sc => sc.Beneficiary,
+                s => s.Id,
+                (scApplied, Scheme) => new { scApplied, Scheme }).Select(c => c.Scheme);
+            vw.Schemes = vw.Schemes.Except(schemesApplied).ToList();
             return View(vw);
         }
         public async Task<IActionResult> EditScheme(int id)
         {
             var url = $"{_apiUrl}/Scheme/{id}";
-            var result = await Utilities.HttpGetCall<Scheme>(url);
+            var result = await _Utilities.HttpGetCall<Scheme>(url);
 
             return View("EditScheme", result);
 
@@ -139,10 +149,26 @@ namespace CIS.Web.Controllers
         public async Task<IActionResult> DetailsScheme(int id)
         {
             var url = $"{_apiUrl}/Scheme/{id}";
-            var result = await Utilities.HttpGetCall<Scheme>(url);
+            var result = await _Utilities.HttpGetCall<Scheme>(url);
 
             return View("DetailsScheme", result);
 
+        }
+        [HttpPost]
+        public async void AssociateSchemesBeneficiary(int Beneficiary, int Schemes)
+        {
+            var beneficiary = _Utilities.HttpGetCall<Beneficiary>($"{_apiUrl}/Beneficiary/{Beneficiary}");
+            var scheme = _Utilities.HttpGetCall<Beneficiary>($"{_apiUrl}/Schemes/{Schemes}");
+
+            var postData = new BeneficiarySchemeApplied
+            {
+                Beneficiary = beneficiary.Id,
+                ApplicationStatus = "PENDING",
+                IsDeleted = false,
+                Scheme = scheme.Id
+            };
+            var url = $"{_apiUrl}/";
+           // return View("AssociateSchemesBeneficiary");
         }
     }
 }

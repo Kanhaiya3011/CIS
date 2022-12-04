@@ -7,24 +7,28 @@
 <h1>AssociateSchemesBeneficiary</h1>
 
 <div class="row">
-    <div class="col-6">
-        <h5>Select Beneficiary</h5>
-          <div class="form-group">
-                <label  class="control-label">Category</label>
+    <form asp-action="AssociateSchemesBeneficiary" method="post">
+        <div class="col-6">
+            <h5>Select Beneficiary</h5>
+            <div class="form-group">
+                <label class="control-label">Category</label>
                 <select asp-for="Beneficiary"
                         asp-items="@(new SelectList(Model.Beneficiary, nameof(CIS.Models.Beneficiary.Id), nameof(CIS.Models.Beneficiary.FirstName)))">
                     <option>Please select one</option>
                 </select>
             </div>
-    </div>
-    <div class="col-6">
-        <h5>Apply Scheme</h5>
-        <div class="form-group">
-            <label class="control-label">Category</label>
-            <select asp-for="Schemes"
-                    asp-items="@(new SelectList(Model.Schemes, nameof(CIS.Models.Scheme.Id), nameof(CIS.Models.Scheme.SchemeName)))">
-                <option>Please select one</option>
-            </select>
         </div>
-    </div>
+        <div class="col-6">
+            <h5>Apply Scheme</h5>
+            <div class="form-group">
+                <label class="control-label">Category</label>
+                <select asp-for="Schemes"
+                        asp-items="@(new SelectList(Model.Schemes, nameof(CIS.Models.Scheme.Id), nameof(CIS.Models.Scheme.SchemeName)))">
+                    <option>Please select one</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Associate</button> 
+    </form>
+    
 </div>
