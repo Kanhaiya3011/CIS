@@ -1,30 +1,55 @@
 ﻿@model CIS.Models.Relations.ViewModelBeneficiarySchemeApplied
 @{
     ViewData["Title"] = "AssociateSchemesBeneficiary";
-    Layout = "~/Views/Shared/_User.cshtml";
+    Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<h1>AssociateSchemesBeneficiary</h1>
+<h1>Associate Schemes and Beneficiary</h1>
 
 <div class="row">
     <div class="col-6">
-        <h5>Select Beneficiary</h5>
-          <div class="form-group">
-                <label  class="control-label">Category</label>
-                <select asp-for="Beneficiary"
+        <div>
+            <h5>Select Beneficiary</h5>
+            <div class="form-group">
+                <select asp-for="Beneficiary" id="select-ben"
                         asp-items="@(new SelectList(Model.Beneficiary, nameof(CIS.Models.Beneficiary.Id), nameof(CIS.Models.Beneficiary.FirstName)))">
                     <option>Please select one</option>
                 </select>
             </div>
+        </div>
+        <div id="not-applied-schemes">
+          
+        </div>
+        
     </div>
     <div class="col-6">
-        <h5>Apply Scheme</h5>
-        <div class="form-group">
-            <label class="control-label">Category</label>
-            <select asp-for="Schemes"
-                    asp-items="@(new SelectList(Model.Schemes, nameof(CIS.Models.Scheme.Id), nameof(CIS.Models.Scheme.SchemeName)))">
-                <option>Please select one</option>
-            </select>
-        </div>
+       <h3>View Association</h3>
+
     </div>
 </div>
+
+<script type="text/javascript">
+    $('#select-ben').on('change', function () {
+        console.log("list item selected");
+        var val = $(this).val();
+        var url = 'https://localhost:7098/User/SchemeApplied/' + val;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: JSON.stringify(objData),
+            cache: false,
+            contentType: 'application/json',
+            crossdomain: true,
+            async: false,
+            success: function (data) {
+                $('#not-applied-schemes').html(data);
+               
+            },
+            error: function (error) {
+
+                callback(error);
+            }
+        });
+        console.log(val);
+    });
+</script>

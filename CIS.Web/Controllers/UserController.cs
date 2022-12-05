@@ -15,7 +15,18 @@ namespace CIS.Web.Controllers
         {
             _Utilities = utilities;
         }
+        public async Task<IActionResult> ViewUsers()
+        {
+            var url = $"{_apiUrl}/User";
+            var users = await _Utilities.HttpGetCall<IList<User>>(url);
+            return View(users);
+        }
+        public  IActionResult AddUser()
+        {
+            var user = new User();
+            return View(user);
 
+        }
         public async Task<IActionResult> Index(int id)
         {
             //var id = Request.Query["id"];
@@ -70,6 +81,16 @@ namespace CIS.Web.Controllers
             return View("ViewBen", result);
 
         }
+        public async Task<IActionResult> SchemeApplied(int val)
+        {
+            var id = Request.Query["val"];
+            var vw = new ViewModelBeneficiarySchemeApplied();
+            var url = $"{_apiUrl}/SchemesApplied/{val}";
+            vw.Schemes = await _Utilities.HttpGetCall<IList<Scheme>>(url);
+            vw.Schemes = vw.Schemes.Where(s => s.IsActive == true).ToList();
+           
+            return PartialView(vw);
+        }
         public async Task<IActionResult> EditBen(int id)
         {
             if (id == 0)
@@ -99,7 +120,7 @@ namespace CIS.Web.Controllers
             scheme.scheme = new Scheme();
             scheme.categories = await _Utilities.HttpGetCall<IList<Category>>(url);
             TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
-            return View("AddScheme", scheme);
+            return View(scheme);
         }
         [HttpPost]
         public async Task<IActionResult> AddScheme(Scheme scheme)
@@ -108,7 +129,8 @@ namespace CIS.Web.Controllers
             var newScheme = new SchemeViewModel();
             if (ModelState.IsValid)
             {
-                var result = _Utilities.HttpPostCall<Scheme>(url, scheme);
+               // scheme.Category = await _Utilities.HttpGetCall($"{}")
+                var result = await _Utilities.HttpPostCall<Scheme>(url, scheme);
                 newScheme.categories = await _Utilities.HttpGetCall<IList<Category>>($"{_apiUrl}/Category");
             }
             else
@@ -116,9 +138,9 @@ namespace CIS.Web.Controllers
                 return BadRequest();
             }
             TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
-            return View("AddScheme", newScheme);
+            return RedirectToAction("ViewSchemes", "User");
         }
-        public async Task<IActionResult> ViewSchemesAsync()
+        public async Task<IActionResult> ViewSchemes()
         {
             var url = $"{_apiUrl}/Scheme";
             var result = await _Utilities.HttpGetCall<IList<Scheme>>(url);
@@ -130,13 +152,29 @@ namespace CIS.Web.Controllers
             var vw = new ViewModelBeneficiarySchemeApplied();
             vw.Beneficiary = await _Utilities.HttpGetCall<IList<Beneficiary>>($"{_apiUrl}/Beneficiary");
             vw.Schemes = await _Utilities.HttpGetCall<IList<Scheme>>($"{_apiUrl}/Scheme");
-            vw.SchemeApplied = await _Utilities.HttpGetCall<IList<BeneficiarySchemeApplied>>($"{_apiUrl}/Beneficiary");
-            var schemesApplied = vw.SchemeApplied?.Join(vw.Schemes,
-                sc => sc.Beneficiary,
+            vw.Schemes = vw.Schemes.Where(s => s.IsActive == true).ToList();
+            vw.SchemeApplied = await _Utilities.HttpGetCall<IList<BeneficiarySchemeApplied>>($"{_apiUrl}/SchemesApplied");
+            
+            foreach (var ben in vw.Beneficiary)
+            {
+                var schemes= vw.SchemeApplied.Where(sa => sa.Beneficiary == ben.Id).ToList();
+                var appliedSchemesNames = schemes.Join(vw.Schemes,
+                sc => sc.Scheme,
                 s => s.Id,
-                (scApplied, Scheme) => new { scApplied, Scheme }).Select(c => c.Scheme);
-            vw.Schemes = vw.Schemes.Except(schemesApplied).ToList();
+                (scApplied, Scheme) => new { scApplied, Scheme }).Select(c => c.Scheme.SchemeName).ToList();
+                if(appliedSchemesNames.Count > 0)
+                    vw.Association.Associated.Add($"{ben.FirstName} {ben.LastName}", appliedSchemesNames);
+            }
             return View(vw);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditScheme(Scheme scheme)
+        {
+            var url = $"{_apiUrl}/Scheme/{scheme.Id}";
+            var result = await _Utilities.HttpPutCall<Scheme>(url, scheme);
+
+            return RedirectToAction("ViewSchemes", "User");
+
         }
         public async Task<IActionResult> EditScheme(int id)
         {
@@ -146,6 +184,7 @@ namespace CIS.Web.Controllers
             return View("EditScheme", result);
 
         }
+        
         public async Task<IActionResult> DetailsScheme(int id)
         {
             var url = $"{_apiUrl}/Scheme/{id}";
@@ -155,10 +194,10 @@ namespace CIS.Web.Controllers
 
         }
         [HttpPost]
-        public async void AssociateSchemesBeneficiary(int Beneficiary, int Schemes)
+        public async Task<IActionResult> AssociateSchemesBeneficiary(int Beneficiary, int Schemes)
         {
-            var beneficiary = _Utilities.HttpGetCall<Beneficiary>($"{_apiUrl}/Beneficiary/{Beneficiary}");
-            var scheme = _Utilities.HttpGetCall<Beneficiary>($"{_apiUrl}/Schemes/{Schemes}");
+            var beneficiary = await _Utilities.HttpGetCall<Beneficiary>($"{_apiUrl}/Beneficiary/{Beneficiary}");
+            var scheme = await _Utilities.HttpGetCall<Scheme>($"{_apiUrl}/Scheme/{Schemes}");
 
             var postData = new BeneficiarySchemeApplied
             {
@@ -167,8 +206,9 @@ namespace CIS.Web.Controllers
                 IsDeleted = false,
                 Scheme = scheme.Id
             };
-            var url = $"{_apiUrl}/";
-           // return View("AssociateSchemesBeneficiary");
+            var url = $"{_apiUrl}/SchemesApplied";
+            var result = await _Utilities.HttpPostCall<BeneficiarySchemeApplied>(url, postData);
+            return RedirectToAction("AssociateSchemesBeneficiary", "User");
         }
     }
 }

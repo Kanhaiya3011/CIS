@@ -10,7 +10,7 @@ namespace CIS.Web.Helper
             var payload = SerializeObject(content);
             HttpResponseMessage response = await client.PostAsync(url, payload);
             var result = await response.Content.ReadAsStringAsync();
-            var returnObject = JsonConvert.DeserializeObject<T>(result);
+            var returnObject = this.DeserializeObject<T>(result);
             return returnObject;
 
         }
@@ -20,19 +20,19 @@ namespace CIS.Web.Helper
                 System.Text.Encoding.UTF8, "application/json");
             return content;
         }
-        public async Task<T?> HttpGetCall<T>(string url)
+        public async Task<T> HttpGetCall<T>(string url)
         {
             HttpResponseMessage response = await client.GetAsync(url);
             var result = await response.Content.ReadAsStringAsync();
-            var returnObject = JsonConvert.DeserializeObject<T>(result);
+            var returnObject = this.DeserializeObject<T>(result);
             return returnObject;
         }
-        public async Task<T?> HttpPutCall<T>(string url, T content)
+        public async Task<T> HttpPutCall<T>(string url, T content)
         {
             var payload = SerializeObject(content);
             HttpResponseMessage response = await client.PutAsync(url, payload);
             var result = await response.Content.ReadAsStringAsync();
-            var returnObject = JsonConvert.DeserializeObject<T>(result);
+            var returnObject = this.DeserializeObject<T>(result);
             return returnObject;
 
 
@@ -43,7 +43,7 @@ namespace CIS.Web.Helper
             return response;
 
         }
-        private T? DeSerializeObject<T>(string content)
+        private T DeserializeObject<T>(string content)
         {
             try
             {

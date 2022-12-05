@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CIS.Models
@@ -13,9 +15,14 @@ namespace CIS.Models
         public int Id { get; set; }
         [Required]
         public string SchemeName { get; set; }
-        public int CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        public virtual Category Category { get; set; }
         public string SchemeDescription { get; set; }
         public bool IsActive { get; set; }
+        public Scheme()
+        {
+            Category = new Category();
+        }
     }
     public class SchemeViewModel
     {

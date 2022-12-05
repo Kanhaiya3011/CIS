@@ -1,0 +1,9 @@
+﻿@model CIS.Models.Relations.ViewModelBeneficiarySchemeApplied
+
+<h5>Apply Schemes</h5>
+<div class="form-group">
+    <select asp-for="Schemes"
+            asp-items="@(new SelectList(Model.Schemes, nameof(CIS.Models.Scheme.Id), nameof(CIS.Models.Scheme.SchemeName)))">
+        <option>Please select one</option>
+    </select>
+</div>

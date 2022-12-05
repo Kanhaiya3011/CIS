@@ -8,7 +8,7 @@
 <h1>ViewSchemes</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="AddScheme">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -23,7 +23,7 @@
                 @Html.DisplayNameFor(model => model.SchemeDescription)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryId)
+                @Html.DisplayNameFor(model => model.Category.CategoryName)
             </th>
             <th></th>
         </tr>
@@ -41,7 +41,7 @@
                 @Html.DisplayFor(modelItem => item.SchemeDescription)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CategoryId)
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
             </td>
             <td>
                 @Html.ActionLink("Edit", "EditScheme", "User", new { id=item.Id }) |

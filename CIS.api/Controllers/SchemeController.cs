@@ -2,6 +2,7 @@ using CIS.DAL;
 using CIS.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace CIS.api.Controllers
 {
@@ -14,13 +15,25 @@ namespace CIS.api.Controllers
             _logger = logger;
             _context = context;
         }
+        //[HttpGet("/GetNotAppliedSchemes/{val:int}")]
+        //public async Task<IActionResult> GetNotAppliedSchemes(int val)
+        //{
+        //    var schemes = await _context.Schemes.ToListAsync();
+        //    var appliedSchemes = await _context.BeneficiarySchemeApplied.Where(s => s.Beneficiary == val).ToListAsync();
+        //    var appliedSchems = schemes.Join(appliedSchemes,
+        //            s => s.Id,
+        //            a => a.Scheme,
+        //            (ls, la) => new { ls, la }).Select(c => c.ls).ToList();
 
+        //    var notAppliedSchemes = schemes.Except(appliedSchems).ToList();
+        //    return Ok(notAppliedSchemes);
+        //}
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             try
             {
-                var schemes = await _context.Schemes.Where(s => s.IsActive == true).ToListAsync();
+                var schemes = await _context.Schemes.Include("Category").ToListAsync();
                 return Ok(schemes);
             }
             catch (Exception ex)
@@ -35,7 +48,7 @@ namespace CIS.api.Controllers
         {
             try
             {
-                var scheme = await _context.Schemes.FindAsync(id);
+                var scheme = await _context.Schemes.Include("Category").FirstOrDefaultAsync(s => s.Id == id);
                 return Ok(scheme);
             }
             catch (Exception ex)
@@ -53,8 +66,10 @@ namespace CIS.api.Controllers
                 if (scheme != null)
                 {
                     await _context.Schemes.AddAsync(scheme);
-                    await _context.SaveChangesAsync();
-                   
+
+                    _context.Entry(scheme.Category).State = EntityState.Unchanged;
+                    _context.SaveChanges();
+
                 }
                 else
                     return BadRequest("User data is incomplete");
@@ -73,7 +88,7 @@ namespace CIS.api.Controllers
         {
             if (scheme == null || id != scheme.Id)
                 return BadRequest();
-
+            _context.Entry(scheme.Category).State = EntityState.Unchanged;
             _context.Schemes.Update(scheme);
             await _context.SaveChangesAsync();
 

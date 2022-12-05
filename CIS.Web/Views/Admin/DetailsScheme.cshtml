@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "DetailsScheme";
-    Layout = "~/Views/Shared/_User.cshtml";
+    Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
 <h1>DetailsScheme</h1>
@@ -24,10 +24,10 @@
             @Html.DisplayFor(model => model.SchemeName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CategoryId)
+            @Html.DisplayNameFor(model => model.Category.CategoryName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CategoryId)
+            @Html.DisplayFor(model => model.Category.CategoryName)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.SchemeDescription)

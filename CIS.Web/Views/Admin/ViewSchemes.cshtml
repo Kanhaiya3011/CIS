@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "ViewSchemes";
-    Layout = "~/Views/Shared/_User.cshtml";
+    Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
 <h1>ViewSchemes</h1>
@@ -23,7 +23,10 @@
                 @Html.DisplayNameFor(model => model.SchemeDescription)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryId)
+                @Html.DisplayNameFor(model => model.Category.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
             </th>
             <th></th>
         </tr>
@@ -41,11 +44,21 @@
                 @Html.DisplayFor(modelItem => item.SchemeDescription)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CategoryId)
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "EditScheme", "User", new { id=item.Id }) |
-                    @Html.ActionLink("Details", "DetailsScheme", "User", new {  id=item.Id })
+               @if(item.IsActive){
+                        <span>Approved</span>
+               }
+               else{
+                        <span>Pending/Rejected</span>
+               }
+                
+
+            </td>
+            <td>
+                @Html.ActionLink("Approve", "ApproveScheme", "Admin", new { id=item.Id }) |
+                    @Html.ActionLink("Reject", "RejectScheme", "Admin", new {  id=item.Id })
             </td>
         </tr>
 }

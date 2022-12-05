@@ -25,11 +25,17 @@
             </div>
             <div class="form-group">
                 <label  class="control-label">Category</label>
-                <select asp-for="scheme.CategoryId"
-                        asp-items="@(new SelectList(Model.categories, nameof(CIS.Models.Category.Id), nameof(CIS.Models.Category.CategoryName)))">
-                    <option>Please select one</option>
+               @* <select asp-for="categories" class="form-control"
+                        asp-items="@(new SelectList(Model.categories, nameof(CIS.Models.Category), nameof(CIS.Models.Category.CategoryName)))">
+                    <option>Please select Beneficiary</option>
+                </select>*@
+                <select asp-for="scheme.Category.Id" id="idCategory" class="form-control">
+                    <option selected>Please Choose...</option>
+                    @foreach(var cat in Model.categories){
+                        <option value="@cat.Id">@cat.CategoryName</option>
+                    }
                 </select>
-                <span asp-validation-for="scheme.CategoryId" class="text-danger"></span>
+                <span asp-validation-for="scheme.Category.Id" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="scheme.SchemeDescription" class="control-label"></label>

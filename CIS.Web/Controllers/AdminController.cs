@@ -9,11 +9,60 @@ namespace CIS.Web.Controllers
     {
         private readonly string _apiUrl = @"https://localhost:7042/api";
         private readonly IUtilities _Utilities;
+
         public AdminController(IUtilities utilities)
         {
             _Utilities = utilities;
         }
+        public IActionResult AddUser()
+        {
+            var vw = new User();
+            TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
+            return View(vw);
+        }
+        public async Task<IActionResult> ViewUser()
+        {
+            var url = $"{_apiUrl}/User";
+            var vw = await _Utilities.HttpGetCall<IList<User>>(url);
+            TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
+            return View(vw);
+        }
+        public async Task<IActionResult> EditUser(int id)
+        {
+            var url = $"{_apiUrl}/User/{id}";
+            var result = await _Utilities.HttpGetCall<User>(url);
 
+            return View("EditUser", result);
+
+        }
+        public async Task<IActionResult> UserDetails(int id)
+        {
+            var url = $"{_apiUrl}/Scheme/{id}";
+            var result = await _Utilities.HttpGetCall<User>(url);
+
+            return View("UserDetails", result);
+
+        }
+        public async Task<IActionResult> ApproveUser(int id)
+        {
+            var url = $"{_apiUrl}/User/{id}";
+            var result = await _Utilities.HttpGetCall<User>(url);
+            result.Status = "Approved";
+            var res = await _Utilities.HttpPutCall(url, result);
+
+            return RedirectToAction("ViewUser", "Admin");
+
+        }
+        public async Task<IActionResult> RejectUser(int id)
+        {
+            var url = $"{_apiUrl}/User/{id}";
+            var result = await _Utilities.HttpGetCall<User>(url);
+            result.Status = "Rejected";
+            var res = await _Utilities.HttpPutCall(url, result);
+
+            return RedirectToAction("ViewUser", "Admin");
+
+        }
         public async Task<IActionResult> Index(int id)
         {
             //var id = Request.Query["id"];
@@ -124,7 +173,7 @@ namespace CIS.Web.Controllers
             TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return View("AddScheme", newScheme);
         }
-        public async Task<IActionResult> ViewSchemesAsync()
+        public async Task<IActionResult> ViewSchemes()
         {
             var url = $"{_apiUrl}/Scheme";
             var result = await _Utilities.HttpGetCall<IList<Scheme>>(url);
@@ -139,20 +188,26 @@ namespace CIS.Web.Controllers
             vw.SchemeApplied = await _Utilities.HttpGetCall<IList<BeneficiarySchemeApplied>>($"{_apiUrl}/Beneficiary");
             return View(vw);
         }
-        public async Task<IActionResult> EditScheme(int id)
+        public async Task<IActionResult> ApproveScheme(int id)
         {
             var url = $"{_apiUrl}/Scheme/{id}";
             var result = await _Utilities.HttpGetCall<Scheme>(url);
 
-            return View("EditScheme", result);
+            result.IsActive = true;
+            var res = await _Utilities.HttpPutCall<Scheme>(url, result);
+
+            return RedirectToAction("ViewSchemes", "Admin");
 
         }
-        public async Task<IActionResult> DetailsScheme(int id)
+        public async Task<IActionResult> RejectScheme(int id)
         {
             var url = $"{_apiUrl}/Scheme/{id}";
             var result = await _Utilities.HttpGetCall<Scheme>(url);
 
-            return View("DetailsScheme", result);
+            result.IsActive = false;
+            var res = await _Utilities.HttpPutCall<Scheme>(url, result);
+
+            return RedirectToAction("ViewSchemes", "Admin");
 
         }
     }

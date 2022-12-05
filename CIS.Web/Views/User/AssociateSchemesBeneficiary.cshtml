@@ -3,32 +3,68 @@
     ViewData["Title"] = "AssociateSchemesBeneficiary";
     Layout = "~/Views/Shared/_User.cshtml";
 }
+<h1>Associate Schemes Beneficiary</h1>
 
-<h1>AssociateSchemesBeneficiary</h1>
-
-<div class="row">
+<div>
     <form asp-action="AssociateSchemesBeneficiary" method="post">
-        <div class="col-6">
-            <h5>Select Beneficiary</h5>
-            <div class="form-group">
-                <label class="control-label">Category</label>
-                <select asp-for="Beneficiary"
-                        asp-items="@(new SelectList(Model.Beneficiary, nameof(CIS.Models.Beneficiary.Id), nameof(CIS.Models.Beneficiary.FirstName)))">
-                    <option>Please select one</option>
-                </select>
+        <div class="col-sm-5">
+            <div>
+                <h5>Select Beneficiary</h5>
+                <div class="form-group">
+                    <select asp-for="Beneficiary" id="select-ben"
+                            asp-items="@(new SelectList(Model.Beneficiary, nameof(CIS.Models.Beneficiary.Id), nameof(CIS.Models.Beneficiary.FirstName)))">
+                        <option>Please select one</option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="col-6">
-            <h5>Apply Scheme</h5>
-            <div class="form-group">
-                <label class="control-label">Category</label>
-                <select asp-for="Schemes"
-                        asp-items="@(new SelectList(Model.Schemes, nameof(CIS.Models.Scheme.Id), nameof(CIS.Models.Scheme.SchemeName)))">
-                    <option>Please select one</option>
-                </select>
+            <div id="not-applied-schemes">
             </div>
+
         </div>
-        <button type="submit" class="btn btn-primary">Associate</button> 
+        <div class="col-sm-5" style="position: absolute;top: 190px;left: 850px;">            
+            <h3>View Beneficiaries and Schemes Applied</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Beneficiary
+                        </th>
+                        <th>
+                            Applied Scheme
+                        </th>
+                </thead>
+                <tbody>
+                    @if (Model.Association.Associated != null)
+                    {
+                        foreach (var assoc in Model.Association.Associated)
+                        {
+                            <tr>
+                                <td>
+                                    @assoc.Key
+                                </td>
+                                <td>
+                                    @{
+                                        int i = 0;
+                                        foreach (var val in assoc.Value)
+                                        {
+                                            i++;
+                                            <div><b>@i. @val</b></div>
+                                        }
+                                    }
+                                   
+                                </td>
+                            </tr>
+
+
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+        <button type="submit" class="btn btn-primary">Associate</button>
     </form>
-    
+
 </div>
+<script type="text/javascript" src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/applyscheme.js" type="text/javascript"></script>
