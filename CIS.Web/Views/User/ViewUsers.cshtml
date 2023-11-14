@@ -3,10 +3,14 @@
 @{
     ViewData["Title"] = "ViewUsers";
     Layout = "~/Views/Shared/_Admin.cshtml";
+    var user = TempData["LoggedInUser"];
 }
 
 <h1>ViewUsers</h1>
-
+<div class="welcome-message">
+    Welcome : @user
+    <p>@Html.ActionLink("Logout", "Logout", "Admin")</p>
+</div>
 <p>
     <a asp-action="Create">Create New</a>
 </p>

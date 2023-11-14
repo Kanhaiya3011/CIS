@@ -3,13 +3,15 @@
 @{
     ViewData["Title"] = "ViewUser";
     Layout = "~/Views/Shared/_Admin.cshtml";
+    var user = TempData["LoggedInUser"];
 }
 
 <h1>ViewUser</h1>
+<div class="welcome-message">
+    Welcome : @user
+    <p>@Html.ActionLink("Logout", "Logout", "Admin")</p>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -29,7 +31,7 @@
                 @Html.DisplayNameFor(model => model.Password)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RoleId)
+                @Html.DisplayNameFor(model => model.Roles.RoleName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
@@ -56,14 +58,13 @@
                 @Html.DisplayFor(modelItem => item.Password)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RoleId)
+                @Html.DisplayFor(modelItem => item.Roles.RoleName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @Html.ActionLink("Edit", "EditUser", new {  id=item.Id }) |
-                @Html.ActionLink("Details", "UserDetails", new {  id=item.Id  }) |
+               @* @Html.ActionLink("Edit", "EditUser", new {  id=item.Id }) |*@
                 @Html.ActionLink("Approve", "ApproveUser", new { id=item.Id   })
                 @Html.ActionLink("Reject", "RejectUser", new { id=item.Id   })
             </td>

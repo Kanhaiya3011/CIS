@@ -4,33 +4,35 @@
     ViewData["Title"] = "AddScheme";
     Layout = "~/Views/Shared/_User.cshtml";
     var user = TempData["LoggedInUser"];
+    var message = TempData["schemeCreated"];
 }
 
 <h1>AddScheme</h1>
 
-<h4>Scheme</h4>
 <hr />
 <div class="welcome-message">
-    <p>Welcome : @user</p>
+    Welcome : @user
+    <p>@Html.ActionLink("Logout", "Logout", "Admin")</p>
 </div>
 <div class="row">
     <div>
+        <p>@message</p>
+    </div>
+    <div class="col-md-4">
         <form asp-action="AddScheme" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <div class="form-group">
-                <label asp-for="scheme.SchemeName" class="control-label"></label>
-                <input asp-for="scheme.SchemeName" class="form-control" />
+                <input asp-for="scheme.SchemeName" class="form-control" placeholder="Scheme Name" />
                 <span asp-validation-for="scheme.SchemeName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label  class="control-label">Category</label>
                @* <select asp-for="categories" class="form-control"
                         asp-items="@(new SelectList(Model.categories, nameof(CIS.Models.Category), nameof(CIS.Models.Category.CategoryName)))">
                     <option>Please select Beneficiary</option>
                 </select>*@
                 <select asp-for="scheme.Category.Id" id="idCategory" class="form-control">
-                    <option selected>Please Choose...</option>
+                    <option selected>Select Category</option>
                     @foreach(var cat in Model.categories){
                         <option value="@cat.Id">@cat.CategoryName</option>
                     }
@@ -38,8 +40,7 @@
                 <span asp-validation-for="scheme.Category.Id" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="scheme.SchemeDescription" class="control-label"></label>
-                <textarea asp-for="scheme.SchemeDescription" class="form-control text-area"></textarea>
+                <textarea asp-for="scheme.SchemeDescription" class="form-control text-area" placeholder="Scheme Description"></textarea>
                 <span asp-validation-for="scheme.SchemeDescription" class="text-danger"></span>
             </div>
             <div class="form-group">

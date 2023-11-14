@@ -20,6 +20,7 @@ namespace CIS.DAL
         public DbSet<Role> Roles { get; init; }
         public DbSet<BeneficiarySchemeApplied> BeneficiarySchemeApplied { get; init; }
         public DbSet<Beneficiary> Beneficiaries { get; init; }
+        public DbSet<PhysicallyDisability> PhysicallyDisabilies { get; init; }
 
 
 

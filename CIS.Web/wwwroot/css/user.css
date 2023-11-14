@@ -186,10 +186,10 @@ html {
 
 .welcome-message {
     position: absolute;
-    top: 70px;
+    top: 60px;
     font-size: 18px;
     font-weight: 600;
-    right: 300px;
+    right: 30px;
 }
 .form-group input, textarea {
     font-size: 18px;

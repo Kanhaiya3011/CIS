@@ -3,13 +3,14 @@
 @{
     ViewData["Title"] = "ViewSchemes";
     Layout = "~/Views/Shared/_Admin.cshtml";
+    var user = TempData["LoggedInUser"];
 }
 
 <h1>ViewSchemes</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="welcome-message">
+    Welcome : @user
+    <p>@Html.ActionLink("Logout", "Logout", "Admin")</p>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -58,7 +59,7 @@
             </td>
             <td>
                 @Html.ActionLink("Approve", "ApproveScheme", "Admin", new { id=item.Id }) |
-                    @Html.ActionLink("Reject", "RejectScheme", "Admin", new {  id=item.Id })
+                @Html.ActionLink("Reject", "RejectScheme", "Admin", new {  id=item.Id })
             </td>
         </tr>
 }

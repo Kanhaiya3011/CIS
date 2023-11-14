@@ -17,11 +17,20 @@ namespace CIS.Models
         public string SchemeName { get; set; }
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
+        public int AgeFrom { get; set; }
+        public int AgeTo { get; set; }
+        [ForeignKey("GenderId")]
+        public Gender Gender { get; init; }
+        public PhysicallyDisability PhysicallyDisability { get; init; }
+        public int BelowIncomeEligibility { get; set; }
         public string SchemeDescription { get; set; }
+        public bool IsVeteran { get; set; }
         public bool IsActive { get; set; }
         public Scheme()
         {
+            PhysicallyDisability = new PhysicallyDisability();
             Category = new Category();
+            Gender = new Gender();
         }
     }
     public class SchemeViewModel

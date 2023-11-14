@@ -7,17 +7,18 @@
     var message = TempData["benCreated"];
 }
 
-<h1>AddBeneficiary</h1>
+<h1>Add Beneficiary</h1>
 
 <div class="welcome-message">
-    <p>Welcome : @user</p>
+    Welcome : @user
+    <p>@Html.ActionLink("Logout", "Logout", "Admin")</p>
 </div>
 <hr />
 <div class="row">
     <div>
         <p>@message</p>
     </div>
-    <div>
+    <div class="col-md-4">
         <form asp-action="AddBeneficiary" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             

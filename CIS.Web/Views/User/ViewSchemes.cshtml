@@ -3,13 +3,15 @@
 @{
     ViewData["Title"] = "ViewSchemes";
     Layout = "~/Views/Shared/_User.cshtml";
+    var user = TempData["LoggedInUser"];
 }
 
-<h1>ViewSchemes</h1>
+<h1>View Schemes</h1>
+<div class="welcome-message">
+    Welcome : @user
+    <p>@Html.ActionLink("Logout", "Logout", "Admin")</p>
+</div>
 
-<p>
-    <a asp-action="AddScheme">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -24,6 +26,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Category.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
             </th>
             <th></th>
         </tr>
@@ -42,6 +47,19 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+
+            <td>
+                @if (item.IsActive)
+                {
+                            <span>Approved</span>
+                }
+                else
+                {
+                            <span>Pending/Rejected</span>
+                }
+
+
             </td>
             <td>
                 @Html.ActionLink("Edit", "EditScheme", "User", new { id=item.Id }) |
