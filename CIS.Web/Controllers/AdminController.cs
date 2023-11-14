@@ -14,12 +14,38 @@ namespace CIS.Web.Controllers
         {
             _Utilities = utilities;
         }
-        public IActionResult AddUser()
+        public async Task<IActionResult> AddUser()
         {
-            var vw = new User();
+            var vw = new UserViewModel();
+            var url = $"{_apiUrl}/Role";
+            vw.user = new User();
+            vw.roles = await _Utilities.HttpGetCall<IList<Role>>(url);
             TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return View(vw);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddUser(User user)
+        {
+            int? id = 0;
+            var newUser = new UserViewModel();
+            if (ModelState.IsValid)
+            {
+                var url = $"{_apiUrl}/User";
+                user.Status = "Pending";
+                var result = await _Utilities.HttpPostCall<User>(url, user);
+                newUser.roles = await _Utilities.HttpGetCall<IList<Role>>($"{_apiUrl}/Role");
+                id = result?.Id;
+            }
+            else
+            {
+                return BadRequest();
+            }
+            TempData["userCreated"] = $"Successfully created User";
+            TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
+            return View("AddUser", newUser);
+        }
+
         public async Task<IActionResult> ViewUser()
         {
             var url = $"{_apiUrl}/User";
@@ -82,6 +108,7 @@ namespace CIS.Web.Controllers
         {
             var url = $"{_apiUrl}/Beneficiary";
             var result = await _Utilities.HttpGetCall<IList<Beneficiary>>(url);
+            TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return View("ViewBeneficiary", result);
         }
         public IActionResult AddBeneficiary()
@@ -104,7 +131,7 @@ namespace CIS.Web.Controllers
                 var result = await _Utilities.HttpPostCall<Beneficiary>(url, beneficiary);
                 id = result?.Id;
             }
-            TempData["benCreated"] = $"Successfully created User with the ID : {id}";
+            TempData["benCreated"] = $"Successfully created Beneficiary";
             TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return View("AddBeneficiary");
         }
@@ -159,17 +186,20 @@ namespace CIS.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddScheme(Scheme scheme)
         {
+            int? id = 0;
             var url = $"{_apiUrl}/Scheme";
             var newScheme = new SchemeViewModel();
             if (ModelState.IsValid)
             {
                 var result = _Utilities.HttpPostCall<Scheme>(url, scheme);
                 newScheme.categories = await _Utilities.HttpGetCall<IList<Category>>($"{_apiUrl}/Category");
+                id = result?.Id;
             }
             else
             {
                 return BadRequest();
             }
+            TempData["schemeCreated"] = $"Successfully created Scheme";
             TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return View("AddScheme", newScheme);
         }
@@ -177,7 +207,7 @@ namespace CIS.Web.Controllers
         {
             var url = $"{_apiUrl}/Scheme";
             var result = await _Utilities.HttpGetCall<IList<Scheme>>(url);
-
+            TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return View("ViewSchemes", result);
         }
         public async Task<IActionResult> AssociateSchemesBeneficiary()
@@ -208,6 +238,14 @@ namespace CIS.Web.Controllers
             var res = await _Utilities.HttpPutCall<Scheme>(url, result);
 
             return RedirectToAction("ViewSchemes", "Admin");
+
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            HttpContext.Session.SetString("LoggedInUser", "");
+
+            return RedirectToAction("Index", "Home");
 
         }
     }

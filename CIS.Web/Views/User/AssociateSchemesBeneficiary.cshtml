@@ -2,9 +2,13 @@
 @{
     ViewData["Title"] = "AssociateSchemesBeneficiary";
     Layout = "~/Views/Shared/_User.cshtml";
+    var user = TempData["LoggedInUser"];
 }
-<h1>Associate Schemes Beneficiary</h1>
-
+<h3>Associate Schemes Beneficiary</h3>
+<div class="welcome-message">
+    Welcome : @user
+    <p>@Html.ActionLink("Logout", "Logout", "Admin")</p>
+</div>
 <div>
     <form asp-action="AssociateSchemesBeneficiary" method="post">
         <div class="col-sm-5">
@@ -21,7 +25,7 @@
             </div>
 
         </div>
-        <div class="col-sm-5" style="position: absolute;top: 190px;left: 850px;">            
+        <div class="col-sm-5" style="position: absolute;top: 206px;left: 870px;">            
             <h3>View Beneficiaries and Schemes Applied</h3>
             <table class="table">
                 <thead>

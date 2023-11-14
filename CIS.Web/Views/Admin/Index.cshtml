@@ -4,5 +4,6 @@
     var user = $"{Model.FirstName} {Model.LastName}";
 }
 <div class="welcome-message">
-    <p>Welcome : @user</p>
+    Welcome : @user
+    <p>@Html.ActionLink("Logout", "Logout", "Admin")</p>
 </div> 

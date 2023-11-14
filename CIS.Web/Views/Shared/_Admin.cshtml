@@ -9,10 +9,12 @@
 </head>
 <body>
 
-    <div class="container">
-        <section class="banner-user">
+    <div class="container-fluid">
+        <section class="banner-user" style="font-size: 40px;"> 
+            Government Schemes
         </section>
-        <div class="row">
+        <div class="d-flex align-items-center justify-content-start">
+            
             <div class="col-3">
                 <nav class="left-accordion">
                     <div class="accordion accordion-flush" id="accordion">
@@ -24,7 +26,7 @@
                             </h2>
                             <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                 <ul class="ul-nav">
-                                    <li><a asp-action="AddBeneficiary" asp-controller="Admin">Add Users</a></li>
+                                    <li><a asp-action="AddUser" asp-controller="Admin">Add Users</a></li>
                                     <li><a asp-action="ViewUser" asp-controller="Admin">Manage Users</a></li>
                                 </ul>
                             </div>
@@ -58,15 +60,15 @@
                     </div>
                 </nav>
             </div>
-            <div class="col-9">
+            <div class="col-8">
                 @RenderBody()
             </div>
         </div>
 
 
-        <footer class="border-top footer text-muted">
-            <div class="row" style="text-align: center;">
-                &copy; 2022 - CIS.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <footer class="bg-primary text-center text-white fixed-bottom">
+            <div class="text-center p-3" style="background-color: #33cccc;">
+                &copy; 2022 - Government Schemes.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
             </div>
         </footer>
     </div>

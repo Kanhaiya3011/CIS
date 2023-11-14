@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using System.Reflection;
 
 namespace CIS.Models
@@ -14,7 +16,26 @@ namespace CIS.Models
         [Required]
         public string Password { get; set; }
         public int RoleId { get; set; }
+
+
+        [ForeignKey("RoleId")]
+        public virtual Role Roles { get; set; }
+
         public string Status { get; set; }
+        public User()
+        {
+            Roles = new Role();
+        }
+    }
+
+    public class UserViewModel
+    {
+        public User user { get; set; }
+        public IList<Role> roles { get; set; }
+        public UserViewModel()
+        {
+            roles = new List<Role>();
+        }
     }
 
 }

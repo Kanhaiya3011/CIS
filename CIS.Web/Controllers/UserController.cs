@@ -46,6 +46,7 @@ namespace CIS.Web.Controllers
         {
             var url = $"{_apiUrl}/Beneficiary";
             var result = await _Utilities.HttpGetCall<IList<Beneficiary>>(url);
+            TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return View("ViewBeneficiary", result);
         }
         public IActionResult AddBeneficiary()
@@ -68,7 +69,7 @@ namespace CIS.Web.Controllers
                 var result = await _Utilities.HttpPostCall<Beneficiary>(url, beneficiary);
                 id = result?.Id;
             }
-            TempData["benCreated"] = $"Successfully created User with the ID : {id}";
+            TempData["benCreated"] = $"Successfully created Beneficiary";
             TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return View("AddBeneficiary");
         }
@@ -78,6 +79,7 @@ namespace CIS.Web.Controllers
                 return BadRequest();
             var url = $"{_apiUrl}/Beneficiary/{id}";
             var result = await _Utilities.HttpGetCall<Beneficiary>(url);
+            TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return View("ViewBen", result);
 
         }
@@ -111,7 +113,7 @@ namespace CIS.Web.Controllers
 
             var newBen = new Beneficiary();
             TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
-            return View("EditBen", newBen);
+            return RedirectToAction("ViewBeneficiary", "User");
         }
         public async Task<IActionResult> AddScheme()
         {
@@ -137,6 +139,7 @@ namespace CIS.Web.Controllers
             {
                 return BadRequest();
             }
+            TempData["schemeCreated"] = $"Successfully created Scheme";
             TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return RedirectToAction("ViewSchemes", "User");
         }
@@ -144,7 +147,7 @@ namespace CIS.Web.Controllers
         {
             var url = $"{_apiUrl}/Scheme";
             var result = await _Utilities.HttpGetCall<IList<Scheme>>(url);
-
+            TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return View("ViewSchemes", result);
         }
         public async Task<IActionResult> AssociateSchemesBeneficiary()
@@ -165,6 +168,7 @@ namespace CIS.Web.Controllers
                 if(appliedSchemesNames.Count > 0)
                     vw.Association.Associated.Add($"{ben.FirstName} {ben.LastName}", appliedSchemesNames);
             }
+            TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return View(vw);
         }
         [HttpPost]
@@ -172,7 +176,7 @@ namespace CIS.Web.Controllers
         {
             var url = $"{_apiUrl}/Scheme/{scheme.Id}";
             var result = await _Utilities.HttpPutCall<Scheme>(url, scheme);
-
+            TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return RedirectToAction("ViewSchemes", "User");
 
         }
@@ -180,7 +184,7 @@ namespace CIS.Web.Controllers
         {
             var url = $"{_apiUrl}/Scheme/{id}";
             var result = await _Utilities.HttpGetCall<Scheme>(url);
-
+            TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return View("EditScheme", result);
 
         }
@@ -189,7 +193,7 @@ namespace CIS.Web.Controllers
         {
             var url = $"{_apiUrl}/Scheme/{id}";
             var result = await _Utilities.HttpGetCall<Scheme>(url);
-
+            TempData["LoggedInUser"] = HttpContext.Session.GetString("LoggedInUser");
             return View("DetailsScheme", result);
 
         }

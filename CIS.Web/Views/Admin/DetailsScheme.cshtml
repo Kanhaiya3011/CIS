@@ -3,9 +3,15 @@
 @{
     ViewData["Title"] = "DetailsScheme";
     Layout = "~/Views/Shared/_Admin.cshtml";
+    var user = TempData["LoggedInUser"];
 }
 
 <h1>DetailsScheme</h1>
+
+<div class="welcome-message">
+    Welcome : @user
+    <p>@Html.ActionLink("Logout", "Logout", "Admin")</p>
+</div>
 
 <div>
     <h4>Scheme</h4>

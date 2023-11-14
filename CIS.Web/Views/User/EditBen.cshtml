@@ -6,12 +6,16 @@
     var user = TempData["LoggedInUser"];
 }
 
-<h1>EditBen</h1>
-
+<h1>Edit Beneficiary</h1>
+<div class="welcome-message">
+    Welcome : @user
+    <p>@Html.ActionLink("Logout", "Logout", "Admin")</p>
+</div>
 <h4>Beneficiary</h4>
 <hr />
 <div class="welcome-message">
-    <p>Welcome : @user</p>
+    Welcome : @user
+    <p>@Html.ActionLink("Logout", "Logout", "Admin")</p>
 </div>
 <div class="row">
     <div class="col-md-4">
@@ -59,7 +63,4 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 

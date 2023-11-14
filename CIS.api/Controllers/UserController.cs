@@ -20,7 +20,7 @@ namespace CIS.api.Controllers
         {
             try
             {
-                var users = await _context.Users.ToListAsync();
+                var users = await _context.Users.Include("Roles").ToListAsync();
                 return Ok(users);
             }
             catch (Exception ex)
@@ -35,7 +35,7 @@ namespace CIS.api.Controllers
         {
             try
             {
-                var user = await _context.Users.FindAsync(id);
+                var user = await _context.Users.Include("Roles").FirstOrDefaultAsync(s => s.Id == id);
                 return Ok(user);
             }
             catch (Exception ex)
@@ -53,6 +53,7 @@ namespace CIS.api.Controllers
                 if (user != null)
                 {
                     await _context.Users.AddAsync(user);
+                    _context.Entry(user.Roles).State = EntityState.Unchanged;
                     await _context.SaveChangesAsync();
                    
                 }

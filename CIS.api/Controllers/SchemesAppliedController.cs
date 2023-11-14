@@ -34,11 +34,13 @@ namespace CIS.api.Controllers
                 throw new Exception(ex.ToString());
             }
         }
+        [HttpGet]
         public async Task<IActionResult> Get()
         {
             var appliedSchems = await _context.BeneficiarySchemeApplied.ToListAsync();
             return Ok(appliedSchems);
         }
+
         [HttpGet("{id}")] //
         public async Task<IActionResult> Get(int id)
         {

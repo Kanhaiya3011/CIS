@@ -53,6 +53,7 @@ namespace CIS.Web.Controllers
             }
             else if (result != null && result.RoleId == 1)
             {
+                HttpContext.Session.SetString("LoggedInUser", $"{result?.FirstName} {result?.LastName}");
                 return RedirectToAction("Index", "Admin", new { id = result?.Id });
             }
             else if (result != null && result.RoleId == 2)
